@@ -1,0 +1,27 @@
+{
+  "name": "use-subscribable",
+  "version": "1.0.0",
+  "description": "Allows accessing Subscribables using React hooks",
+  "main": "build/index.js",
+  "author": "David Alsh",
+  "license": "MIT",
+  "scripts": {
+    "start": "parcel demo/index.html --out-dir demo-dist",
+    "build": "npx tsc",
+    "clean": "rm -rf build demo-dist .cache build",
+    "prepublish": "npm run build"
+  },
+  "peerDependencies": {
+    "react": "^16.7.0-alpha.0",
+    "react-dom": "^16.7.0-alpha.0"
+  },
+  "devDependencies": {
+    "@types/react": "^16.8.23",
+    "@types/react-dom": "^16.8.4",
+    "parcel-bundler": "^1.12.3",
+    "react": "^16.7.0-alpha.0",
+    "react-dom": "^16.7.0-alpha.0",
+    "rxjs": "^6.3.3",
+    "typescript": "^3.5.3"
+  }
+}
