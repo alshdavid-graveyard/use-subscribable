@@ -13,6 +13,8 @@ yarn add use-subscribable
 
 ```ts
 import { 
+  useRx,
+  useSubscribable,
   useObservable, 
   useSubject, 
   useBehaviorSubject 

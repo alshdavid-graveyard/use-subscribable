@@ -15,6 +15,7 @@ export const useSubscribable = <T>(
   );
   return value;
 };
+export const useRx = useSubscribable
 
 export const useObservable = <T>(
   o: Observable<T>, 
