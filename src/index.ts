@@ -1,4 +1,5 @@
-export * from './use-observable'
+export * from './use-subscribe'
+export * from './subscribe'
 
-import { useSubscribable } from "./use-observable";
-export default useSubscribable;
+import { useSubscribe } from "./use-subscribe";
+export default useSubscribe;

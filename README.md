@@ -5,33 +5,29 @@ Allows dereferencing of Observables (see [RxJS](https://rxjs-dev.firebaseapp.com
 ## Install
 
 ```
-yarn add use-subscribable
+yarn add use-subscribe
 ```
 
 ## Use
 
 
 ```ts
-import { 
-  useRx,
-  useSubscribable,
-  useObservable, 
-  useSubject, 
-  useBehaviorSubject 
-} from "use-subscribable";
+import { useSubscribe, Subscribe } from "use-subscribe";
 ```
+
+## Hooks
 
 ```jsx
 import React from "react";
 import ReactDOM from "react-dom";
 import { interval } from "rxjs";
-import { useObservable } from "use-subscribable";
+import { useSubscribe } from "use-subscribe";
 
 const intCounter = interval(1000);
 
 const App = () => {
   const [count, setCount] = React.useState(0);
-  const obsCount = useObservable(intCounter, 0);
+  const obsCount = useSubscribe(intCounter, 0);
 
   return (
     <div>
@@ -45,6 +41,30 @@ const App = () => {
     </div>
   );
 };
+
+ReactDOM.render(<App />, document.getElementById("root"));
+```
+
+## Decorators
+
+```jsx
+import React from "react";
+import ReactDOM from "react-dom";
+import { interval } from "rxjs";
+import { Subscribe } from "use-subscribe";
+
+const counter = interval(1000)
+
+class App extends React.Component {
+  @Subscribe(counter)
+  count: number = 0
+
+  render() {
+    return (
+      <div>{this.counter}</div>
+    )
+  }
+}
 
 ReactDOM.render(<App />, document.getElementById("root"));
 ```

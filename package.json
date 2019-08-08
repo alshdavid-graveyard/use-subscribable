@@ -1,10 +1,14 @@
 {
-  "name": "use-subscribable",
-  "version": "1.0.2",
-  "description": "Allows accessing Subscribables using React hooks",
+  "name": "use-subscribe",
+  "version": "1.0.0",
+  "description": "Allows accessing Subscribables using React",
   "main": "build/index.js",
   "author": "David Alsh",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alshdavid/use-subscribable"
+  },
   "scripts": {
     "start": "parcel demo/index.html --out-dir demo-dist",
     "build": "npx tsc",

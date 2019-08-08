@@ -1,30 +1,47 @@
-import React from "react";
+import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import { interval, BehaviorSubject } from "rxjs";
-import { useObservable, useBehaviorSubject, useSubscribable } from "../src";
-
-const createBehaviorCounter = () => {
-  let i = 0
-  const $ = new BehaviorSubject(i)
-
-  setInterval(() => {
-    $.next(i)
-    i++
-  }, 1000)
-
-  return $
-}
-const behav44iorCounter = createBehaviorCounter()
-
+import { tap } from "rxjs/operators";
+import { altCounter } from './alt'
+import { useSubscribe, Subscribe } from "../src";
 
 
 const counter = interval(1000)
 
-const App = () => {  
-  const count = useSubscribable(counter);
+class AppA extends React.Component {
+  @Subscribe(altCounter)
+  count: number = 0
 
-  return (
-    <div>Count: {count}</div>
+  render() {
+    return <div>Count: {this.count}</div>
+  }
+}
+
+class AppB extends React.Component {
+  @Subscribe(altCounter)
+  count: number = 0
+
+  render() {
+    return <div>Count: {this.count}</div>
+  }
+}
+
+const App = () => {
+  const [ page, setPage ] = useState('A')
+
+  const toggle = () => {
+    if (page === 'A') {
+      setPage('B')
+    } else {
+      setPage('A')
+    }
+  }
+
+  return (<div>
+      <button onClick={toggle}>Toggle</button>
+      { page === 'A' ? <AppA /> : undefined }
+      { page === 'B' ? <AppB /> : undefined }
+    </div>
   );
 };
 
