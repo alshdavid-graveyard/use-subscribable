@@ -37,7 +37,6 @@ export function Subscribe<T>(
         })
       } else {
         subscription = subscribe((value: any) => {
-          console.log('blip')
           this[key] = value
           this.forceUpdate()
         })

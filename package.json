@@ -1,6 +1,6 @@
 {
   "name": "use-subscribe",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Allows accessing Subscribables using React",
   "main": "build/index.js",
   "author": "David Alsh",
