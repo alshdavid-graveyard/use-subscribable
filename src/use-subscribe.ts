@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { Subscribable, SubscribableFn, Unsubscribable } from './types'
+import { ValueGetterSubscriber, SubscriberFunc, UnsubscriberFunc, Unsubscriber } from './types'
 
 export const useSubscribe = <T = any>(
-  subscribable: Subscribable<T>, 
+  subscribable: ValueGetterSubscriber<T>, 
   defaultValue?: T,
   getterFn?: () => T
 ): T => { 
@@ -23,29 +23,31 @@ export const useSubscribe = <T = any>(
   }
   const [ value, setValue ] = useState(defaultValue);
 
-  useEffect(
-    () => {
-      let subscribe: SubscribableFn<T>
-      if (typeof subscribable === "function") {
-        subscribe = subscribable
+  useEffect(() => {
+    let subscribe: SubscriberFunc<T> | undefined
+    if (typeof subscribable === "function") {
+      subscribe = subscribable
+    }
+    if (subscribable.subscribe !== undefined) {
+      subscribe = (cb: any) => subscribable.subscribe!(cb)
+    }
+    if (!subscribe) {
+      throw new Error('NoSubscribeFunction')
+    }
+    let subscription: UnsubscriberFunc | Unsubscriber
+    if (getterFn) {
+      subscription = subscribe(() => setValue(getterFn()));
+    } else {
+      subscription = subscribe(setValue);
+    }
+    return () => {
+      if (typeof subscription === "function") {
+        subscription()
       } else {
-        subscribe = (cb: any, ...args: any[]) => subscribable.subscribe(cb, ...args)
+        subscription.unsubscribe()
       }
-      let subscription: Unsubscribable
-      if (getterFn) {
-        subscription = subscribe(() => setValue(getterFn()));
-      } else {
-        subscription = subscribe(setValue);
-      }
-      return () => {
-        if (typeof subscription === "function") {
-          subscription()
-        } else {
-          subscription.unsubscribe()
-        }
-      }
-    },
-    [ subscribable ]
-  );
+    }
+  }, [ subscribable ]);
+
   return value as T;
 };

@@ -1,30 +1,11 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
-import { interval, BehaviorSubject } from "rxjs";
-import { tap } from "rxjs/operators";
+import { interval } from "rxjs";
 import { altCounter } from './alt'
-import { useSubscribe, Subscribe } from "../src";
-
+import { AppA } from "./func-based";
+import { AppB } from "./class-based";
 
 const counter = interval(1000)
-
-class AppA extends React.Component {
-  @Subscribe(altCounter)
-  count: number = 0
-
-  render() {
-    return <div>Count: {this.count}</div>
-  }
-}
-
-class AppB extends React.Component {
-  @Subscribe(altCounter)
-  count: number = 0
-
-  render() {
-    return <div>Count: {this.count}</div>
-  }
-}
 
 const App = () => {
   const [ page, setPage ] = useState('A')
@@ -39,8 +20,8 @@ const App = () => {
 
   return (<div>
       <button onClick={toggle}>Toggle</button>
-      { page === 'A' ? <AppA /> : undefined }
-      { page === 'B' ? <AppB /> : undefined }
+      { page === 'A' ? <AppA counter={counter} altCounter={altCounter} /> : undefined }
+      { page === 'B' ? <AppB counter={counter} altCounter={altCounter} /> : undefined }
     </div>
   );
 };

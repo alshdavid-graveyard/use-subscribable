@@ -1,16 +1,17 @@
-import { Unsubscribable, Subscribable, SubscribableFn } from "./types"
+import { ValueGetterSubscriber } from "./types"
 
 export function Subscribe<T>(
-  subscribable: Subscribable<T>,
+  subscribableFn: (props: any) => ValueGetterSubscriber<T>,
   getterFn?: () => T
 ) {
   return function(target: any, key: string) {
-    let subscription: Unsubscribable
+    let subscription: any
     const targetComponentDidMount = target.componentDidMount || function() {}
     const targetComponentWillUnmount =
-      target.componentWillUnmount || function() {}
-
+    target.componentWillUnmount || function() {}
+    
     function componentDidMount(this: any): void {
+      const subscribable = subscribableFn(this.props)
       let defaultValue = this[key]
       if (typeof subscribable !== "function" && subscribable.value) {
         defaultValue = subscribable.value
@@ -23,12 +24,11 @@ export function Subscribe<T>(
       }
       this[key] = defaultValue
       this.forceUpdate()
-      let subscribe: SubscribableFn<T>
+      let subscribe: any
       if (typeof subscribable === "function") {
         subscribe = subscribable
       } else {
-        subscribe = (cb: any, ...args: any[]) =>
-          subscribable.subscribe(cb, ...args)
+        subscribe = (cb: any) => subscribable.subscribe!(cb)
       }
       if (getterFn) {
         subscription = subscribe(() => {
