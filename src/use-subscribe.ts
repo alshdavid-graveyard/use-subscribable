@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { ValueGetterSubscriber, SubscriberFunc, UnsubscriberFunc, Unsubscriber } from './types'
+import { getFirstValueSync } from '~/platform/reactive'
 
 export const useSubscribe = <T = any>(
   subscribable: ValueGetterSubscriber<T>, 
@@ -11,15 +12,15 @@ export const useSubscribe = <T = any>(
     subscribable.value
   ) {
     defaultValue = subscribable.value
-  }
-  if (
+  } else if (
     typeof subscribable !== "function" &&
     subscribable.getValue
   ) {
     defaultValue = subscribable.getValue()
-  }
-  if (getterFn) {
+  } else if (getterFn) {
     defaultValue = getterFn()
+  } else {
+    defaultValue = getFirstValueSync(subscribable as any)
   }
   const [ value, setValue ] = useState(defaultValue);
 
